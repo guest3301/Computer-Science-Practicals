@@ -1,0 +1,149 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5
+Server version: 5.5.27 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use fds
+Database changed
+mysql> use FDS;
+Database changed
+mysql> show tables;
++---------------+
+| Tables_in_fds |
++---------------+
+| customer      |
+| product       |
++---------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from customer;
++--------+----------+-------------+-------------+
+| cus_id | cus_name | cus_address | cus_contact |
++--------+----------+-------------+-------------+
+|    102 | harshada | mumbai      | 456         |
+|    104 | aryan    | badlapur    | 876         |
++--------+----------+-------------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from product;
++--------+----------------------+-----------+-----------+
+| pro_id | pro_name             | pro_type  | pro_price |
++--------+----------------------+-----------+-----------+
+|    100 | plix                 | kalyan    |     12345 |
+|    200 | Quick Heal           | Antivirus |      5000 |
+|    201 | Lenovo Mouse         | Mouse     |       500 |
+|    202 | Hp Mouse             | Mouse     |       300 |
+|    204 | Dell Gaming Keyboard | Mouse     |     15000 |
+|    205 | Nortorn              | Antivirus |     15000 |
++--------+----------------------+-----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> alter table customer
+    -> add Primary key(cus_id);
+Query OK, 2 rows affected (0.05 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> describe customer;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| cus_id      | int(10)     | NO   | PRI | 0       |       |
+| cus_name    | varchar(30) | YES  |     | NULL    |       |
+| cus_address | varchar(50) | YES  |     | NULL    |       |
+| cus_contact | varchar(10) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table odr(
+    -> o_id int Primary Key,
+    -> cus_id,
+    -> \c
+mysql> create table odr(
+    -> o_id int Primary Key,
+    -> cus_id int,
+    -> cus_id int);
+ERROR 1060 (42S21): Duplicate column name 'cus_id'
+mysql>  create table odr(
+    ->     -> o_id int Primary Key,
+    ->     -> cus_id int,
+    -> pro_id int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> o_id int Primary Key,
+    -> cus_id int,
+pro_id int)' at line 2
+mysql> alter table odr
+    -> add qnty int;
+ERROR 1146 (42S02): Table 'fds.odr' doesn't exist
+mysql> create table odr(
+    -> o_id int Primary Key,
+    -> cus_id int,
+    -> pro_id int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> alter table odr
+    -> add qnty int;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into odr values(01,102,205,100);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into odr values(02,104,204,150);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into odr values(03,103,201,1500);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into odr values(04,104,201,1600);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select* from odr;
++------+--------+--------+------+
+| o_id | cus_id | pro_id | qnty |
++------+--------+--------+------+
+|    1 |    102 |    205 |  100 |
+|    2 |    104 |    204 |  150 |
+|    3 |    103 |    201 | 1500 |
+|    4 |    104 |    201 | 1600 |
++------+--------+--------+------+
+4 rows in set (0.00 sec)
+
+mysql> select count (pro_id) as Total Product from product;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Product from product' at line 1
+mysql> select CURDATE () AS curren_date;
+ERROR 1630 (42000): FUNCTION fds.CURDATE does not exist. Check the 'Function Name Parsing and Resolution' section in the Reference Manual
+mysql> select * from
+    -> customer
+    -> where cus_id IN(select cus_id from purchase where qnty='1500');
+ERROR 1146 (42S02): Table 'fds.purchase' doesn't exist
+mysql> update customer
+    -> set cus_add ='MALAD'
+    -> where cus_id =102
+    -> ;
+ERROR 1054 (42S22): Unknown column 'cus_add' in 'field list'
+mysql> delete from product where pro_id = 201;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> Rename table odr as purchase;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as purchase' at line 1
+mysql> select * from product
+    -> order by pro_price;
++--------+----------------------+-----------+-----------+
+| pro_id | pro_name             | pro_type  | pro_price |
++--------+----------------------+-----------+-----------+
+|    202 | Hp Mouse             | Mouse     |       300 |
+|    200 | Quick Heal           | Antivirus |      5000 |
+|    100 | plix                 | kalyan    |     12345 |
+|    204 | Dell Gaming Keyboard | Mouse     |     15000 |
+|    205 | Nortorn              | Antivirus |     15000 |
++--------+----------------------+-----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql>
