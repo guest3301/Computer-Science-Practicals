@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weird Moving Button</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #282c34;
+            overflow: hidden;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #movingButton {
+            position: absolute;
+            padding: 20px 40px;
+            font-size: 20px;
+            color: white;
+            background-color: #ff4081;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .split {
+            display: flex;
+            justify-content: space-between;
+            width: 100px;
+        }
+
+        .half {
+            width: 50px;
+            height: 40px;
+            background-color: #ff4081;
+            border: none;
+            border-radius: 25px;
+            transition: transform 0.5s ease;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="movingButton">Catch Me!</button>
+
+    <script>
+        const button = document.getElementById('movingButton');
+
+        function moveButton() {
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 100);
+            button.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        setInterval(moveButton, 1000);
+
+        button.addEventListener('click', () => {
+            button.innerHTML = '';
+            const leftHalf = document.createElement('div');
+            const rightHalf = document.createElement('div');
+
+            leftHalf.className = 'half';
+            rightHalf.className = 'half';
+
+            leftHalf.style.transform = 'translateX(-50px)';
+            rightHalf.style.transform = 'translateX(50px)';
+
+            button.appendChild(leftHalf);
+            button.appendChild(rightHalf);
+
+            setTimeout(() => {
+                leftHalf.style.transform = 'translateX(0)';
+                rightHalf.style.transform = 'translateX(0)';
+            }, 100);
+
+            setTimeout(() => {
+                button.innerHTML = 'You Caught Me!';
+                button.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    button.style.transform = 'scale(1)';
+                }, 300);
+            }, 500);
+        });
+    </script>
+
+</body>
+</html>
